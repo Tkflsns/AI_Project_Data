@@ -1,0 +1,9 @@
+##디렉토리 제외
+input/
+output/
+lincenseplateocr/
+RealESRGAN/
+weights/
+saved_models/
+CRAFT/
+runs/
