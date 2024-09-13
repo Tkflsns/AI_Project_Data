@@ -1,6 +1,17 @@
 ##디렉토리 제외
+<<<<<<< HEAD
 input/*
 output/*
 lincenseplateocr/*
 Real-ESRGAN/*
 weights/*
+=======
+input/
+output/
+lincenseplateocr/
+RealESRGAN/
+weights/
+saved_models/
+CRAFT/
+runs/
+>>>>>>> 691db04910b13dd3610a393f406ba95b5e1b20d9

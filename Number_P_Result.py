@@ -64,7 +64,7 @@ def NP_Detect(filepath):
     
                 # 대비 조정 (1.0은 기본값, 2.0은 대비를 2배로 증가)
                 enhancer = ImageEnhance.Contrast(gray_image)
-                contrast_image = enhancer.enhance(2.0)
+                contrast_image = enhancer.enhance(1.0)
     
                 cropped_image_path = os.path.join(cropped_output_folder, f"{os.path.splitext(os.path.basename(filepath))[0]}.jpg")
                 contrast_image.save(cropped_image_path)

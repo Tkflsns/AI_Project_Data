@@ -23,7 +23,7 @@ def revert_filename(new_name, original_name):
     os.rename(new_name, original_name)
 
 def enhance_image(input_file, output_folder, model_name='RealESRNet_x4plus', denoise_strength=0.5, outscale=4, 
-                   model_path='./weights/RealESRNet_x4plus.pth', suffix='', tile=0, tile_pad=10, pre_pad=0, face_enhance=False, 
+                   model_path='./RealESRGAN/weights/RealESRNet_x4plus.pth', suffix='', tile=0, tile_pad=10, pre_pad=0, face_enhance=False, 
                    fp32=True, alpha_upsampler='realesrgan', ext='auto', gpu_id=None):
     
     # 한글을 제거한 임시 파일 이름으로 변경
@@ -59,9 +59,11 @@ def enhance_image(input_file, output_folder, model_name='RealESRNet_x4plus', den
                 'https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.5.0/realesr-general-wdn-x4v3.pth',
                 'https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.5.0/realesr-general-x4v3.pth'
             ]
-
+        
         # 모델 경로 결정
         if model_path is not None:
+            # model = RRDBNet(num_in_ch=1, num_out_ch=1, num_feat=64, num_block=23, num_grow_ch=32, scale=4)
+            # netscale = 4
             model_path = model_path
         else:
             model_path = os.path.join('weights', model_name + '.pth')

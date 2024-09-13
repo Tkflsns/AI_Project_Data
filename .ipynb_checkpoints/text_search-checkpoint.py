@@ -104,7 +104,7 @@ class Opt:
         self.output_folder = output_folder  # 외부에서 입력받은 출력 폴더 경로
         self.workers = 0
         self.batch_size = 1
-        self.saved_model = 'lincenseplateocr/pretrained/Fine-Tuned.pth'
+        self.saved_model = 'lincenseplateocr/pretrained/iter_50000.pth'
         self.batch_max_length = 16
         self.imgH = 32
         self.imgW = 100
