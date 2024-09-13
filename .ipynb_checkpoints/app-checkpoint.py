@@ -36,7 +36,7 @@ def upload_file():
         file.save(input_filepath)
 
         # 이미지 처리 후 결과 텍스트 파일 경로 반환
-        image_file, text_filepath = process_image(input_filepath)
+        image_file, text_filepath, confidence_scores = process_image(input_filepath)
         print(image_file)
         # 처리된 이미지 파일 경로 설정 (Boxed_crop/gray 디렉토리에서 이름이 같은 파일)
         processed_image_filename = os.path.basename(image_file)
@@ -63,7 +63,8 @@ def upload_file():
         # JSON 응답으로 이미지(Base64)와 텍스트 내용 전송
         response = {
             'image': encoded_image,  # Base64 인코딩된 처리된 이미지 데이터
-            'text': text_content     # 텍스트 파일의 내용
+            'text': text_content,     # 텍스트 파일의 내용
+            'score': confidence_scores
         }
 
         return jsonify(response), 200

@@ -56,6 +56,7 @@ def demo(opt):
 
     model.eval()
     output_file_paths = []
+    confidence_scores = []  # confidence score들을 저장할 리스트
     with torch.no_grad():
         length_for_pred = torch.IntTensor([opt.batch_max_length]).to(device)
         text_for_pred = torch.LongTensor(1, opt.batch_max_length + 1).fill_(0).to(device)
@@ -82,7 +83,7 @@ def demo(opt):
             pred = pred[:pred_EOS]
             pred_max_prob = pred_max_prob[:pred_EOS]
 
-        confidence_score = pred_max_prob.cumprod(dim=0)[-1]
+        confidence_score = pred_max_prob.cumprod(dim=0)[-1].item()  # 확률값을 가져오기 위해 item() 호출
 
         # output 폴더가 없으면 생성
         if not os.path.exists(opt.output_folder):
@@ -94,8 +95,9 @@ def demo(opt):
             log.write(f'{pred:25s}')
 
         output_file_paths.append(log_path)
+        confidence_scores.append(confidence_score)
 
-    return output_file_paths
+    return output_file_paths, confidence_scores  # 결과 경로와 정확도 리턴
 
 # Jupyter 환경에서는 명령줄 인자를 수동으로 설정합니다.
 class Opt:
@@ -132,6 +134,6 @@ def process_text(image_file, output_folder):
     cudnn.deterministic = True
     opt.num_gpu = torch.cuda.device_count()
 
-    # 모델 실행 및 결과 텍스트 파일 경로 리턴
-    output_file_paths = demo(opt)
-    return output_file_paths
+    # 모델 실행 및 결과 텍스트 파일 경로와 정확도 리턴
+    output_file_paths, confidence_scores = demo(opt)
+    return output_file_paths, confidence_scores

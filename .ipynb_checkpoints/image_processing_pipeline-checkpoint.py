@@ -30,7 +30,7 @@ def extract_text(image_file):
     result_file_paths = process_text(image_file, output_folder)
     print(f"Result files saved at: {result_file_paths}")
     
-    return result_file_paths  # 추출된 텍스트 파일 경로 반환
+    return result_file_paths, confidence_scores  # 추출된 텍스트 파일 경로 반환
 
 def process_image(image_file):
     # 1. 번호판 검출
@@ -40,13 +40,13 @@ def process_image(image_file):
     upscaled_image_file = upscale_image(plate_image_file)
     
     # 3. 텍스트 추출
-    text = extract_text(upscaled_image_file)
+    text, confidence_scores = extract_text(upscaled_image_file)
 
     # 메모리 해제
     gc.collect()
     torch.cuda.empty_cache()
     
-    return plate_image_file, text
+    return plate_image_file, text, confidence_scores
 
 if __name__ == "__main__":
     # 테스트용 이미지 파일 경로
