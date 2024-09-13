@@ -64,7 +64,7 @@ def upload_file():
         response = {
             'image': encoded_image,  # Base64 인코딩된 처리된 이미지 데이터
             'text': text_content,     # 텍스트 파일의 내용
-            'score': confidence_scores
+            'score': confidence_scores[0]
         }
 
         return jsonify(response), 200

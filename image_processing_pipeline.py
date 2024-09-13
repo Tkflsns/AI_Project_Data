@@ -27,7 +27,7 @@ def extract_text(image_file):
     output_folder = 'output/Number_Search/'  # 실제 출력 폴더 경로
     
     # 텍스트 처리 결과 파일 경로 반환
-    result_file_paths, confidence_score = process_text(image_file, output_folder)
+    result_file_paths, confidence_scores = process_text(image_file, output_folder)
     print(f"Result files saved at: {result_file_paths}")
     
     return result_file_paths, confidence_scores  # 추출된 텍스트 파일 경로 반환
