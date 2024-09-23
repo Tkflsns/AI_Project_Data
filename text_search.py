@@ -1,4 +1,5 @@
 import os
+import re
 import string
 import torch
 import torch.backends.cudnn as cudnn
@@ -51,7 +52,7 @@ def demo(opt):
 
     # 단일 이미지 파일 처리
     image = Image.open(opt.image_folder).convert('RGB')
-    image.show()
+    # image.show()
     image = transform(image).unsqueeze(0).to(device)  # 배치 차원을 추가하고 GPU로 보냄
 
     model.eval()
@@ -82,8 +83,11 @@ def demo(opt):
             pred_EOS = pred.find('[s]')
             pred = pred[:pred_EOS]
             pred_max_prob = pred_max_prob[:pred_EOS]
-
-        confidence_score = pred_max_prob.cumprod(dim=0)[-1].item()  # 확률값을 가져오기 위해 item() 호출
+            
+        match = re.search(r'\d{4}', pred)
+        pred_max_match = pred_max_prob[match.start():match.end()]
+        confidence_score_cumprod = pred_max_match.cumprod(dim=0)[-1].item()
+        confidence_score_mean = pred_max_match.mean().item()
 
         # output 폴더가 없으면 생성
         if not os.path.exists(opt.output_folder):
@@ -95,7 +99,8 @@ def demo(opt):
             log.write(f'{pred:25s}')
 
         output_file_paths.append(log_path)
-        confidence_scores.append(confidence_score)
+        confidence_scores.append(confidence_score_cumprod)
+        confidence_scores.append(confidence_score_mean)
 
     return output_file_paths, confidence_scores  # 결과 경로와 정확도 리턴
 
@@ -106,7 +111,7 @@ class Opt:
         self.output_folder = output_folder  # 외부에서 입력받은 출력 폴더 경로
         self.workers = 0
         self.batch_size = 1
-        self.saved_model = 'lincenseplateocr/pretrained/iter_50000.pth'
+        self.saved_model = 'lincenseplateocr/pretrained/iter2_8000.pth'
         self.batch_max_length = 16
         self.imgH = 32
         self.imgW = 100

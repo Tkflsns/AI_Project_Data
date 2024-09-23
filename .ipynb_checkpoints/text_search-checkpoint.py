@@ -82,8 +82,11 @@ def demo(opt):
             pred_EOS = pred.find('[s]')
             pred = pred[:pred_EOS]
             pred_max_prob = pred_max_prob[:pred_EOS]
-
-        confidence_score = pred_max_prob.cumprod(dim=0)[-1].item()  # 확률값을 가져오기 위해 item() 호출
+            
+        match = re.search(r'\d{4}', pred)
+        pred_max_match = pred_max_prob[match.start():match.end()]
+        confidence_score_cumprod = pred_max_match.cumprod(dim=0)[-1].item()
+        confidence_score_mean = pred_max_match.mean().item()
 
         # output 폴더가 없으면 생성
         if not os.path.exists(opt.output_folder):
@@ -95,7 +98,7 @@ def demo(opt):
             log.write(f'{pred:25s}')
 
         output_file_paths.append(log_path)
-        confidence_scores.append(confidence_score)
+        confidence_scores.append(confidence_score_cumprod, confidence_score_mean)
 
     return output_file_paths, confidence_scores  # 결과 경로와 정확도 리턴
 
